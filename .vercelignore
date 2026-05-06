@@ -1,9 +1,0 @@
-diff --git a/.vercelignore b/.vercelignore
-new file mode 100644
-index 0000000000000000000000000000000000000000..ee6a4731488ea1fed6c6e242ff85aad2340b6890
---- /dev/null
-+++ b/.vercelignore
-@@ -0,0 +1,3 @@
-+.git
-+.vercel
-+quero-faturar-site.zip
