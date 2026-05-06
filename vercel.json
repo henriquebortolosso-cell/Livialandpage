@@ -1,0 +1,38 @@
+diff --git a/vercel.json b/vercel.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..5ac3853eaadf4d59583995d29208a35a5b92acbe
+--- /dev/null
++++ b/vercel.json
+@@ -0,0 +1,32 @@
++{
++  "$schema": "https://openapi.vercel.sh/vercel.json",
++  "framework": null,
++  "buildCommand": "npm run build",
++  "outputDirectory": ".",
++  "cleanUrls": true,
++  "trailingSlash": false,
++  "headers": [
++    {
++      "source": "/(.*)",
++      "headers": [
++        {
++          "key": "X-Content-Type-Options",
++          "value": "nosniff"
++        },
++        {
++          "key": "Referrer-Policy",
++          "value": "strict-origin-when-cross-origin"
++        }
++      ]
++    },
++    {
++      "source": "/index.html",
++      "headers": [
++        {
++          "key": "Cache-Control",
++          "value": "public, max-age=0, must-revalidate"
++        }
++      ]
++    }
++  ]
++}
