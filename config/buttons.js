@@ -19,7 +19,7 @@
 window.ZAPNOTAS_CONFIG = {
 
   whatsapp: {
-    number:  "556135670042",                                       // DDI+DDD+número, sem espaços
+    number:  "5561999231379",                                       // DDI+DDD+número, sem espaços
     message: "Oi! Quero testar a emissão de nota pelo WhatsApp"    // mensagem pré-preenchida
   },
 
