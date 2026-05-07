@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZAP NOTAS – Quero Faturar | Emita notas pelo WhatsApp</title>
+  <meta name="description" content="Emita notas fiscais apenas enviando um áudio no WhatsApp. A LíviA entende e gera no mesmo instante." />
+  <link rel="icon" type="image/jpeg" href="assets/hero-desktop.jpg" />
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       ZAP NOTAS — Landing Page
+       --------------------------------------------------------------------
+       PARA AJUSTAR OS BOTÕES, edite o objeto CONFIG abaixo (no <script>).
+       Cada botão tem 4 números:  left, top, width, height  (em %).
+       Para ver a régua e os retângulos vermelhos: abra a página com ?debug
+         exemplo:   index.html?debug
+                    index.html?debug&section=futuro
+       ──────────────────────────────────────────────────────────────────── -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #fff; overflow-x: hidden; font-family: system-ui, -apple-system, sans-serif; }
+
+    .section { width: 100%; line-height: 0; position: relative; }
+    .section picture, .section img { width: 100%; height: auto; display: block; }
+
+    .ov {
+      position: absolute;
+      display: block;
+      cursor: pointer;
+      background: transparent;
+      border-radius: 8px;
+      text-decoration: none;
+      color: transparent;
+      font-size: 0;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.08);
+    }
+    .ov:hover { background: rgba(255, 255, 255, 0.08); }
+
+    @media (max-width: 640px) { .ov.d { display: none !important; } }
+    @media (min-width: 641px) { .ov.m { display: none !important; } }
+
+    /* Rodapé só aparece no desktop — mobile já tem rodapé na imagem da seção anterior */
+    @media (max-width: 640px) { #footer { display: none !important; } }
+
+    /* ── Modo debug (?debug) ───────────────────────────── */
+    .debug .ov.d, .debug .ov.m {
+      background: rgba(255, 0, 0, 0.28);
+      border: 2px solid red;
+      color: #000;
+      font: bold 10px/1 monospace;
+      text-align: center;
+      overflow: hidden;
+      padding-top: 2px;
+    }
+    .debug .grid-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+    }
+    #hud {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(0, 0, 0, 0.88);
+      color: #0f0;
+      font: bold 14px/1 monospace;
+      padding: 8px 16px;
+      z-index: 99999;
+      text-align: center;
+    }
+    .debug #hud { display: block; }
+
+    /* ── Modal de vídeo ───────────────────────────────── */
+    #video-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    #video-modal.open { display: flex; }
+    #video-modal .inner {
+      position: relative;
+      width: min(92vw, 900px);
+      aspect-ratio: 16 / 9;
+    }
+    #video-modal video {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background: #000;
+    }
+    #video-modal .close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: #fff;
+      font-size: 30px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      line-height: 1;
+    }
+    #video-modal .missing {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font: 16px/1.5 system-ui;
+      text-align: center;
+      padding: 24px;
+      background: #1a1a1a;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="hud">passe o mouse / clique para copiar coordenadas</div>
+
+  <!-- ══ SEÇÃO 1: HERO ══════════════════════════════════ -->
+  <section class="section" id="hero">
+    <picture>
+      <source media="(max-width: 640px)" srcset="assets/hero-mobile.jpg" />
+      <img src="assets/hero-desktop.jpg" alt="ZAP NOTAS — Quero Faturar" loading="eager" />
+    </picture>
+    <div class="grid-layer"></div>
+  </section>
+
+  <!-- ══ SEÇÃO 2: PASSADO vs FUTURO ════════════════════ -->
+  <section class="section" id="futuro">
+    <picture>
+      <source media="(max-width: 640px)" srcset="assets/comparison-mobile.jpg" />
+      <img src="assets/comparison-desktop.jpg" alt="Passado vs Futuro" loading="lazy" />
+    </picture>
+    <div class="grid-layer"></div>
+  </section>
+
+  <!-- ══ SEÇÃO 3: FUNCIONALIDADES ══════════════════════ -->
+  <section class="section" id="features">
+    <picture>
+      <source media="(max-width: 640px)" srcset="assets/features-mobile.jpg" />
+      <img src="assets/features-desktop.jpg" alt="Funcionalidades" loading="lazy" />
+    </picture>
+    <div class="grid-layer"></div>
+  </section>
+
+  <!-- ══ SEÇÃO 4: ESTATÍSTICAS + VÍDEO ═════════════════ -->
+  <section class="section" id="stats">
+    <picture>
+      <source media="(max-width: 640px)" srcset="assets/stats-mobile.jpg" />
+      <img src="assets/stats-desktop.jpg" alt="Estatísticas e demonstração" loading="lazy" />
+    </picture>
+    <div class="grid-layer"></div>
+  </section>
+
+  <!-- ══ SEÇÃO 5: TESTE GRÁTIS ═════════════════════════ -->
+  <section class="section" id="demo">
+    <picture>
+      <source media="(max-width: 640px)" srcset="assets/demo-mobile.jpg" />
+      <img src="assets/demo-desktop.jpg" alt="Teste a Lívia agora" loading="lazy" />
+    </picture>
+    <div class="grid-layer"></div>
+  </section>
+
+  <!-- ══ SEÇÃO 6: CTA FINAL ════════════════════════════ -->
+  <section class="section" id="cta">
+    <picture>
+      <source media="(max-width: 640px)" srcset="assets/cta-mobile.jpg" />
+      <img src="assets/cta-desktop.jpg" alt="Comece agora" loading="lazy" />
+    </picture>
+    <div class="grid-layer"></div>
+  </section>
+
+  <!-- ══ SEÇÃO 7: RODAPÉ ═══════════════════════════════ -->
+  <section class="section" id="footer">
+    <img src="assets/footer.jpg" alt="Quero Faturar — Contatos" loading="lazy" />
+    <div class="grid-layer"></div>
+  </section>
+
+  <!-- Modal de vídeo (HTML5) -->
+  <div id="video-modal" role="dialog" aria-modal="true">
+    <div class="inner">
+      <button class="close" id="modal-close" aria-label="Fechar">✕</button>
+      <video id="video-player" controls preload="metadata" playsinline></video>
+    </div>
+  </div>
+
+  <!-- Carrega as coordenadas dos botões da pasta /config/ -->
+  <script src="config/buttons.js"></script>
+  <script>
+    /* ════════════════════════════════════════════════════════════════════
+       Para ajustar QUALQUER botão da página, edite o arquivo:
+           config/buttons.js
+       Para ajustar WhatsApp ou caminho do vídeo, idem.
+       ════════════════════════════════════════════════════════════════════ */
+    const CONFIG = window.ZAPNOTAS_CONFIG;
+
+    /* ════════════════════════════════════════════════════════════════════
+       Lógica da página — em geral não precisa mexer daqui pra baixo.
+       ════════════════════════════════════════════════════════════════════ */
+    const waLink = `https://wa.me/${CONFIG.whatsapp.number}` +
+                   `?text=${encodeURIComponent(CONFIG.whatsapp.message)}`;
+
+    // Gera os overlays a partir do CONFIG.buttons
+    function renderButtons() {
+      for (const [sectionId, variants] of Object.entries(CONFIG.buttons)) {
+        const section = document.getElementById(sectionId);
+        if (!section) continue;
+
+        for (const [variant, list] of Object.entries(variants)) {
+          list.forEach((btn, i) => {
+            const a = document.createElement("a");
+            a.className = `ov ${variant}`;
+            a.style.left   = `${btn.left}%`;
+            a.style.top    = `${btn.top}%`;
+            a.style.width  = `${btn.width}%`;
+            a.style.height = `${btn.height}%`;
+            a.textContent  = `${sectionId}/${variant}/${i}`;
+
+            if (btn.wa) {
+              a.href = waLink;
+              a.target = "_blank";
+              a.rel = "noopener noreferrer";
+            } else if (btn.play) {
+              a.href = "#";
+              a.dataset.play = "1";
+            } else if (btn.href) {
+              a.href = btn.href;
+              if (btn.href.startsWith("http")) {
+                a.target = "_blank";
+                a.rel = "noopener noreferrer";
+              }
+            }
+            section.appendChild(a);
+          });
+        }
+      }
+    }
+    renderButtons();
+
+    /* ── Modal de vídeo (HTML5) ───────────────────────── */
+    const modal  = document.getElementById("video-modal");
+    const player = document.getElementById("video-player");
+    const inner  = modal.querySelector(".inner");
+
+    async function openVideo() {
+      // Verifica se o arquivo existe; se não, mostra mensagem amigável
+      try {
+        const head = await fetch(CONFIG.video, { method: "HEAD" });
+        if (!head.ok) throw new Error("not found");
+        player.src = CONFIG.video;
+        player.style.display = "";
+        const old = inner.querySelector(".missing");
+        if (old) old.remove();
+        modal.classList.add("open");
+        document.body.style.overflow = "hidden";
+        player.play().catch(() => {});
+      } catch {
+        player.style.display = "none";
+        let msg = inner.querySelector(".missing");
+        if (!msg) {
+          msg = document.createElement("div");
+          msg.className = "missing";
+          msg.innerHTML = `Nenhum vídeo encontrado em <code>${CONFIG.video}</code>.<br>` +
+                          `Coloque seu arquivo na pasta <strong>video/</strong> e recarregue a página.`;
+          inner.appendChild(msg);
+        }
+        modal.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+    }
+
+    function closeVideo() {
+      modal.classList.remove("open");
+      player.pause();
+      player.removeAttribute("src");
+      player.load();
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll("[data-play]").forEach(el => {
+      el.addEventListener("click", e => { e.preventDefault(); openVideo(); });
+    });
+    document.getElementById("modal-close").addEventListener("click", closeVideo);
+    modal.addEventListener("click", e => { if (e.target === modal) closeVideo(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeVideo(); });
+
+    /* ── Modo DEBUG (?debug) — régua + HUD ───────────── */
+    const params  = new URLSearchParams(location.search);
+    const isDebug = params.has("debug");
+
+    if (isDebug) {
+      document.body.classList.add("debug");
+
+      // Mostra apenas a seção pedida (?section=futuro)
+      const only = params.get("section");
+      if (only) {
+        document.querySelectorAll(".section").forEach(el => {
+          if (el.id !== only) el.style.display = "none";
+        });
+      }
+
+      // Desenha grade de 10% em cada seção
+      const NS = "http://www.w3.org/2000/svg";
+      document.querySelectorAll(".grid-layer").forEach(layer => {
+        const svg = document.createElementNS(NS, "svg");
+        svg.setAttribute("width", "100%");
+        svg.setAttribute("height", "100%");
+        svg.style.cssText = "position:absolute;inset:0;overflow:visible;pointer-events:none";
+
+        for (let p = 10; p < 100; p += 10) {
+          const v = document.createElementNS(NS, "line");
+          v.setAttribute("x1", `${p}%`); v.setAttribute("x2", `${p}%`);
+          v.setAttribute("y1", "0");     v.setAttribute("y2", "100%");
+          v.setAttribute("stroke", "rgba(255,255,0,0.55)");
+          svg.appendChild(v);
+
+          const h = document.createElementNS(NS, "line");
+          h.setAttribute("x1", "0");    h.setAttribute("x2", "100%");
+          h.setAttribute("y1", `${p}%`); h.setAttribute("y2", `${p}%`);
+          h.setAttribute("stroke", "rgba(255,255,0,0.55)");
+          svg.appendChild(h);
+
+          for (const [x, y, anchor] of [[`${p}%`, "11", "middle"], ["14", `${p}%`, "middle"]]) {
+            const t = document.createElementNS(NS, "text");
+            t.setAttribute("x", x); t.setAttribute("y", y);
+            t.setAttribute("text-anchor", anchor);
+            t.setAttribute("dominant-baseline", "middle");
+            t.setAttribute("font", "9px monospace");
+            t.setAttribute("font-size", "9");
+            t.setAttribute("font-family", "monospace");
+            t.setAttribute("fill", "#ff0");
+            t.setAttribute("stroke", "#000");
+            t.setAttribute("stroke-width", "0.5");
+            t.setAttribute("paint-order", "stroke");
+            t.textContent = `${p}%`;
+            svg.appendChild(t);
+          }
+        }
+        layer.appendChild(svg);
+      });
+
+      // HUD: mostra coordenadas ao passar o mouse / copia ao clicar
+      const hud = document.getElementById("hud");
+      document.querySelectorAll(".section").forEach(section => {
+        section.addEventListener("mousemove", e => {
+          const r = section.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width  * 100).toFixed(1);
+          const y = ((e.clientY - r.top)  / r.height * 100).toFixed(1);
+          hud.textContent = `#${section.id}   X: ${x}%   Y: ${y}%   (clique para copiar)`;
+        });
+        section.addEventListener("click", e => {
+          if (e.target.classList.contains("ov")) return;
+          const r = section.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width  * 100).toFixed(1);
+          const y = ((e.clientY - r.top)  / r.height * 100).toFixed(1);
+          const css = `left: ${x}, top: ${y}`;
+          navigator.clipboard?.writeText(css).catch(() => {});
+          hud.textContent = `✅ copiado:  ${css}`;
+        });
+      });
+    }
+  </script>
+</body>
+</html>
